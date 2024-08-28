@@ -30,8 +30,8 @@ body.light {
 body.dark {
     --background-color: var(--light-black);
     --text-color: var(--light-white);
-    --button-color: var(--light-gray);
-    --button-hover-color: var(--lighter-gray);
+    --button-color: var(--lighter-gray);
+    --button-hover-color: var(--light-gray);
     --border-color: var(--light-white);
     --modal-darkening-color: var(--darking);
     --modal-background-color: var(--light-black);
@@ -108,6 +108,7 @@ button {
     margin: 5px;
     margin-left: auto;
     z-index: 50;
+    overflow: hidden;
 }
 
 #helpButtonArea {
@@ -125,6 +126,7 @@ button {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    text-align: center;
 }
 
 @media (max-width: 900px) {
@@ -149,7 +151,7 @@ button {
 .modal-content {
     background-color: var(--modal-background-color);
     width: 100%;
-    margin: 15% auto;
+    margin: 30px auto;
     padding: 20px;
     border: 1px solid var(--modal-border-color);
     width: 80%;
@@ -161,6 +163,9 @@ button {
     float: right;
     font-size: 28px;
     font-weight: bold;
+    position: relative;
+    right: 0;
+    top: -9px;
 }
 
 .close:hover,
@@ -208,4 +213,8 @@ input {
 
 p {
     font-size: 1.5em;
+}
+
+#menuIcon {
+    margin: 4px;
 }

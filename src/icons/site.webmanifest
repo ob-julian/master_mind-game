@@ -1,25 +1,19 @@
 {
-    "name": "Mastermind - An old classic digitized",
-    "short_name": "Mastermind",
+    "name": "",
+    "short_name": "",
     "icons": [
         {
-            "src": "android-chrome-192x192.png",
+            "src": "/android-chrome-192x192.png",
             "sizes": "192x192",
             "type": "image/png"
         },
         {
-            "src": "android-chrome-512x512.png",
+            "src": "/android-chrome-512x512.png",
             "sizes": "512x512",
             "type": "image/png"
         }
     ],
-    "theme_color": "#000000",
+    "theme_color": "#ffffff",
     "background_color": "#ffffff",
-    "display": "standalone",
-    "start_url": "/Mastermind/",
-    "scope": "/Mastermind/",
-    "orientation": "portrait",
-    "description": "Mastermind is a classic game where you have to guess the correct combination of colors. This is a digitized version of the game.",
-    "lang": "en",
-    "related_applications": []
+    "display": "standalone"
 }
