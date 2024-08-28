@@ -26,7 +26,7 @@ class Mastermind {
         }
     }
 
-    resetPlayField() {
+    resetGuessField() {
         this.playField = [];
         for (let i = 0; i < this.amountOfPositions; i++) {
             this.playField.push(null);
@@ -77,44 +77,13 @@ class Mastermind {
         }
     }
 
-    initControlsDeprecated() {
-        document.getElementById("table").innerHTML = "<tbody><tr id='tr_0'></tr></tbody>";
-        const tr = document.getElementById("tr_0");
-
-        let selectionField = "<option value='' disabled selected>Select a color</option>";
-        for (let color of this.colors.getColorKeys()) {
-            const btextColor = this.getContrastColor(this.colors.getColor(color));
-            selectionField += `<option value="${color}" style="background-color: ${this.colors.getColor(color)}; color: ${btextColor}">${color}</option>`;
-        }
-        selectionField += "</select>";
-
-        for (let i = 0; i < this.amountOfPositions; i++) {
-            tr.innerHTML += `<td id="td_${i}"><select id='colorSelection_${i}'>${selectionField}</td>`;
-        }
-
-        // add guess button
-        tr.innerHTML += "<td id='button_td' class='button_td'><button id='submit' disabled>Guess</button></td>";
-
-        // Event listeners for the color selection
-        for (let i = 0; i < this.amountOfPositions; i++) {
-            document.getElementById(`colorSelection_${i}`).addEventListener("change", (event) => {
-                const color = event.target.value;
-                this.play(color, i);
-                document.getElementById(`td_${i}`).style.backgroundColor = this.colors.getColor(color);
-            });
-        }
-
-        document.getElementById("submit").addEventListener("click", () => {
-            this.check();
-            this.resetPlayField();
-        });
-    }
 
     initControls() {
         // Cache the table element
-        const table = document.getElementById("table");
-        table.innerHTML = "<tbody><tr id='tr_0'></tr></tbody>";
-        const tr = document.getElementById("tr_0");
+        const table = document.getElementById("playArea");
+        const tr = document.createElement("tr");
+        tr.id = "tr_0";
+        table.appendChild(tr);
     
         // Create a document fragment to build the selection field
         const fragment = document.createDocumentFragment();
@@ -174,7 +143,7 @@ class Mastermind {
         // Event listener for the submit button
         button.addEventListener("click", () => {
             this.check();
-            this.resetPlayField();
+            this.resetGuessField();
         });
     }
 
@@ -226,13 +195,6 @@ class Mastermind {
 
     updatePlayField(correctPositions, correctColors) {
         const tr = document.getElementById("tr_0");
-        const resultArea = document.getElementById("resultArea");
-
-        // chrome and firefox have different behavior when not using tbody
-        resultArea.innerHTML += "<table><tbody id='resultTable'></tbody></table>";
-
-        const resultTable = document.getElementById("resultTable");
-        resultTable.appendChild(tr);
 
         // delete select fields
         for (let i = 0; i < this.amountOfPositions; i++) {
@@ -241,16 +203,18 @@ class Mastermind {
             td.title = selectElement.value;
             selectElement.remove();
         }
-        // HTMLCollection to Array because its a live collection and we can't foreach over it nor directly remove elements
-        [...document.getElementsByClassName("sr-only")].forEach(element => element.remove());
 
         const button__td = document.getElementById("button_td");
-        button__td.innerHTML = "<span style='font-size: 1.5em; height: 0;'>Guess</span>";
-        button__td.innerHTML = "Correct:<br>Positons: " + correctPositions + "<br>Colors: " + (correctPositions + correctColors);
+        button__td.innerHTML = `
+            Positions: ${correctPositions}
+            <br>
+            Colors: ${correctPositions + correctColors}
+        `;
+
         removeAllIdsAndEventListeners(tr);
 
         this.initControls();
-        this.resetPlayField();
+        this.resetGuessField();
     }
     
     changeBrightnessThreshold(brightnessThreshold) {
@@ -287,17 +251,11 @@ class Mastermind {
     }
 
     reset() {
-        let time = new Date();
-
         this.generateSecret();
-        console.log("Time to generate secret code: " + (new Date() - time) + "ms");
-        time = new Date();
-        this.resetPlayField();
-        console.log("Time to reset play field: " + (new Date() - time) + "ms");
-        time = new Date();
+        this.resetGuessField();
+
+        document.getElementById("playArea").innerHTML = "";
         this.initControls();
-        console.log("Time to init controls: " + (new Date() - time) + "ms");
-        document.getElementById("resultArea").innerHTML = "";
     }
 
     _coloredPrint(hex, text) {
@@ -354,9 +312,9 @@ class ModalBase {
             `<div class="center">
                 <h1>Menu</h1>
                 <br>
-                <button id="help" class="modalButton">Help</button>
-                <br>
                 <button id="play" class="modalButton">Settings</button>
+                <br>
+                <button id="help" class="modalButton">Help</button>
                 </div>`
         );
         this._open();
@@ -374,9 +332,9 @@ class ModalBase {
             `<div class="center">
                 <h1>Settings</h1>
                 <label for="amountOfPositions">Amount of positions:</label>
-                <input type="number" id="amountOfPositions" name="amountOfPositions" min="1" max="${mastermind.colors.length}" value="${mastermind.amountOfPositions}">
+                <input type="number" id="amountOfPositions" name="amountOfPositions" min="1" max="${mastermind.colors.getAmountOfColors()}" value="${mastermind.amountOfPositions}">
                 <label for="amountOfColors">Amount of colors:</label>
-                <input type="number" id="amountOfColors" name="amountOfColors" min="1" max="" value="${mastermind.colors.getAmountOfColors()}">
+                <input type="number" id="amountOfColors" name="amountOfColors" min="${mastermind.amountOfPositions}" max="" value="${mastermind.colors.getAmountOfColors()}">
                 <label for="Theme">Theme:</label>
                 <select id="theme" name="theme" class="select">
                     <option value="light">Light</option>
@@ -396,6 +354,7 @@ class ModalBase {
         document.getElementById("back").addEventListener("click", () => {
             this.showMainMenu();
         });
+
         document.getElementById("amountOfPositions").addEventListener("change", (event) => {
             if (event.target.value < 1 || event.target.value > mastermind.colors.getAmountOfColors()) {
                 showErrorMessage("Invalid amount of positions", this.showSettings.bind(this));
@@ -404,10 +363,12 @@ class ModalBase {
             if (mastermind.amountOfPositions !== event.target.value) {
                 mastermind.changeAmountOfPositions(event.target.value);
                 localStorage.setItem("amountOfPositions", event.target.value);
+
+                document.getElementById("amountOfColors").min = event.target.value;
             }
         });
         document.getElementById("amountOfColors").addEventListener("change", (event) => {
-            if (event.target.value < 1) {
+            if (event.target.value < mastermind.amountOfPositions) {
                 showErrorMessage("Invalid amount of colors", this.showSettings.bind(this));
                 return;
             }
@@ -421,6 +382,8 @@ class ModalBase {
                     mastermind.colors.generatColors(event.target.value);
                     localStorage.setItem("amountOfColors", event.target.value);
                     mastermind.reset();
+
+                    document.getElementById("amountOfPositions").max = event.target.value
                 }
             }
         });
@@ -436,8 +399,13 @@ class ModalBase {
         });
         document.getElementById("theme").addEventListener("change", (event) => {
             localStorage.setItem("theme", event.target.value);
-            document.body.classList.remove("light", "dark");
-            document.body.classList.add(event.target.value);
+            if (event.target.value === "devicedefault") {
+                document.body.classList.remove("light", "dark");
+                document.body.classList.add(window.matchMedia('(prefers-color-scheme: dark)').matches ? "dark" : "light");
+            } else {
+                document.body.classList.remove("light", "dark");
+                document.body.classList.add(event.target.value);
+            }
         });
     }
 
@@ -555,11 +523,19 @@ class ModalBase {
         );
         this._open();
 
-        document.getElementById("back").addEventListener("click", () => {
+        const handleGoBack = () => {
             if (goBackModal) {
                 goBackModal();
             } else {
                 this._close();
+            }
+        };
+        
+        document.getElementById("back").addEventListener("click", handleGoBack);
+        
+        document.addEventListener("keydown", (event) => {
+            if (event.key === "Enter") {
+                handleGoBack();
             }
         });
     }
@@ -588,7 +564,7 @@ class Colors {
     }
 
     getAmountOfColors() {
-        return this.amountOfColors;
+        return parseInt(this.amountOfColors);
     }
 
     includes(color) {
@@ -609,7 +585,8 @@ class Colors {
     }
 
     generatColors(numColors) {
-        if (numColors === 8) {
+        // two == because numColors can be a string
+        if (numColors == 8) {
             this.baseColors();
             return;
         }
