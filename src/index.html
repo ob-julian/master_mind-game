@@ -7,16 +7,94 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="css/css.css">
     <script src="js/js.js"></script>
+
+    <!-- icon stuff-->
+    <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
+    <link rel="manifest" href="icons/site.webmanifest">
+    <link rel="mask-icon" href="icons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="icons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#00a300">
+    <meta name="msapplication-config" content="icons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- open graph stuff -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="MasterMind - Play the classic strategy game for free!">
+    <meta property="og:url" content="https://oberhofer.ddns.net/mastermind">
+    <meta property="og:image" content="https://oberhofer.ddns.net/mastermind/icons/android-chrome-512x512.png">
+    <meta property="og:description" content="Experience a captivating single-player game inspired by the classic 1970 board game MasterMind, completely free to play!">
 </head>
-<body>
-    <div id="resultArea">
+<body class="light">
+    <script>
+        // check if dark mode is enabled
+        switch(localStorage.getItem("theme")) {
+            case "dark":
+                document.body.classList.remove("light");
+                document.body.classList.add("dark");
+                break;
+            case "light":
+                document.body.classList.remove("dark");
+                document.body.classList.add("light");
+                break;
+            default:
+                if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    document.body.classList.remove("light");
+                    document.body.classList.add("dark");
+                }
+                break;
+        }
+    </script>
+    <noscript>
+        <div class="noScript">
+            <p>JavaScript is required to play this game.</p>
+        </div>
+        <style>
+            #helpButtonArea, #modal {
+                display: none;
+            }
+
+            @media (prefers-color-scheme: dark) {
+                body {
+                    background-color: #121212;
+                    color: #ffffff;
+                }
+            }
+
+            @media (prefers-color-scheme: light) {
+                body {
+                    background-color: white;
+                    color: black;
+                }
+            }
+        </style>
+    </noscript>
+    <div id="helpButtonArea">
+        <button id="helpButton">?</button>
     </div>
-    
-    <div id="playArea">
-        <table id="table">
-        </table>
+    <div class="center">
+        <div>
+            <div id="resultArea" class="spaceForHelp">
+            </div>
+            
+            <div id="playArea" class="spaceForHelp">
+                <table id="table">
+                </table>
+
+            </div>
+        </div>
     </div>
 
-    
+   
+    <div id="helpArea">
+    </div>
+
+    <div id="modal" class="modal">
+        <div class="modal-content" id="modal-content">
+            <span class="close" id="modal-close">&times;</span>
+            <p>Some information in the modal..</p>
+        </div>
+    </div>
 </body>
 </html>
