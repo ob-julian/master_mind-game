@@ -368,14 +368,15 @@ class ModalBase {
             }
         });
         document.getElementById("amountOfColors").addEventListener("change", (event) => {
-            if (event.target.value < mastermind.amountOfPositions) {
+            // this line is making weird things
+            if (parseInt(event.target.value) < parseInt(mastermind.amountOfPositions)) {
                 showErrorMessage("Invalid amount of colors", this.showSettings.bind(this));
                 return;
             }
             if (!localStorage.getItem("amountOfColors")) {
                 this.warnAboutColorChange(event.target.value);
             } else if (localStorage.getItem("amountOfColors") !== event.target.value) {
-                if (event.target.value >= 100  && !localStorage.getItem("insanityWarning")) {
+                if (event.target.value >= 100 && !localStorage.getItem("insanityWarning")) {
                     localStorage.setItem("insanityWarning", true);
                     this.warnAboutColors(event.target.value);
                 } else {
@@ -383,7 +384,7 @@ class ModalBase {
                     localStorage.setItem("amountOfColors", event.target.value);
                     mastermind.reset();
 
-                    document.getElementById("amountOfPositions").max = event.target.value
+                    document.getElementById("amountOfPositions").max = event.target.value;
                 }
             }
         });
@@ -588,6 +589,7 @@ class Colors {
         // two == because numColors can be a string
         if (numColors == 8) {
             this.baseColors();
+            this.amountOfColors = numColors;
             return;
         }
         const { colors, colorNames } = this._generateColorsAndNames(numColors);
