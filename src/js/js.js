@@ -1,7 +1,6 @@
 class Mastermind {
     constructor(amountOfPositions = 4, amountOfColors = 8, brightnessThreshold = 120) {
         this.colors = new Colors(amountOfColors);
-        console.log(this.colors.getColors());
         this.amountOfPositions = amountOfPositions;
         if (this.colors.getAmountOfColors() < this.amountOfPositions) {
             showErrorMessage("Not enough colors for the amount of positions");
@@ -257,22 +256,6 @@ class Mastermind {
         document.getElementById("playArea").innerHTML = "";
         this.initControls();
     }
-
-    _coloredPrint(hex, text) {
-        console.log(`%c${text}`, `color: ${hex}`);
-    }
-
-    printAllColors() {
-        for (let color of this.colors.getColorKeys()) {
-            this._coloredPrint(this.colors.getColor(color), color);
-        }
-    }
-
-    testFuction(x) {
-        this.colors._generateColorsAndNames(x);
-        this.printAllColors();
-    }
-
 }
 
 class ModalBase {
