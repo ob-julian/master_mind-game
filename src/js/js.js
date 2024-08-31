@@ -3,7 +3,7 @@ class Mastermind {
         this.colors = new Colors(amountOfColors);
         this.amountOfPositions = amountOfPositions;
         if (this.colors.getAmountOfColors() < this.amountOfPositions) {
-            showErrorMessage("Not enough colors for the amount of positions");
+            showErrorMessage("invalidAmountOfColors");
             return;
         }
         
@@ -35,15 +35,15 @@ class Mastermind {
     play(color, position) {
         // check if the color is in the colors array
         if (!this.colors.includes(color)) {
-            showErrorMessage("Invalid color");
+            showErrorMessage("colorNotInArray");
             return;
         }
         if (position < 0 || position >= this.amountOfPositions) {
-            showErrorMessage("Invalid position");
+            showErrorMessage("invalidPosition");
             return;
         }
         if (this.playField.includes(color)) {
-            showErrorMessage("Color already used");
+            showErrorMessage("colorAlreadyUsed");
             return;
         }
         const oldColor = this.playField[position];
@@ -92,7 +92,7 @@ class Mastermind {
         initialOption.value = "";
         initialOption.selected = true;
         initialOption.disabled = true;
-        initialOption.textContent = "Select a color";
+        initialOption.textContent = getText("colors", "select");
         fragment.appendChild(initialOption);
     
         // Create option elements for each color
@@ -125,7 +125,7 @@ class Mastermind {
         const button = document.createElement("button");
         button.id = "submit";
         button.disabled = true;
-        button.textContent = "Guess";
+        button.textContent = getText("buttons", "submit");
         buttonTd.appendChild(button);
         tr.appendChild(buttonTd);
     
@@ -149,7 +149,7 @@ class Mastermind {
     check(){
         // check if all positions are filled
         if (this.playField.includes(null)) {
-            showErrorMessage("Not all positions are filled");
+            showErrorMessage("notAllPositionsFilled");
             return;
         }
         
@@ -172,7 +172,7 @@ class Mastermind {
             // remove event listener
             const clone = button.cloneNode(true);
             button.parentNode.replaceChild(clone, button);
-            clone.innerHTML = "Reset";
+            clone.innerHTML = getText("buttons", "reset");
             clone.addEventListener("click", () => {
                 this.reset();
             });
@@ -205,9 +205,9 @@ class Mastermind {
 
         const button__td = document.getElementById("button_td");
         button__td.innerHTML = `
-            Positions: ${correctPositions}
+            ${getText("feedback", "position")}: ${correctPositions}
             <br>
-            Colors: ${correctPositions + correctColors}
+            ${getText("feedback", "colors")}: ${correctColors}}
         `;
 
         removeAllIdsAndEventListeners(tr);
@@ -218,15 +218,19 @@ class Mastermind {
     
     changeBrightnessThreshold(brightnessThreshold) {
         if (brightnessThreshold < 0 || brightnessThreshold > 255) {
-            showErrorMessage("Invalid brightness threshold");
+            showErrorMessage("invalidBrightnessThreshold");
             return;
         }
         this.brightnessThreshold = brightnessThreshold;
     }
 
     changeAmountOfPositions(amountOfPositions) {
-        if (amountOfPositions < 1 || amountOfPositions > this.colors.getAmountOfColors()) {
-            showErrorMessage("Invalid amount of positions");
+        if (amountOfPositions < 1) {
+            showErrorMessage("negativeValue");
+            return;
+        }
+        if (amountOfPositions > this.colors.getAmountOfColors()) {
+            showErrorMessage("invalidAmountOfPositions");
             return;
         }
         this.amountOfPositions = amountOfPositions;
@@ -295,9 +299,9 @@ class ModalBase {
             `<div class="center">
                 <h1>Menu</h1>
                 <br>
-                <button id="play" class="modalButton">Settings</button>
+                <button id="settings" class="modalButton">${getText("buttons", "settings")}</button>
                 <br>
-                <button id="help" class="modalButton">Help</button>
+                <button id="help" class="modalButton">${getText("buttons", "help")}</button>
                 </div>`
         );
         this._open();
@@ -305,7 +309,7 @@ class ModalBase {
         document.getElementById("help").addEventListener("click", () => {
             this.showHelp();
         });
-        document.getElementById("play").addEventListener("click", () => {
+        document.getElementById("settings").addEventListener("click", () => {
             this.showSettings();
         });
     }
@@ -313,20 +317,24 @@ class ModalBase {
     showSettings() {
         this._setContent(
             `<div class="center">
-                <h1>Settings</h1>
-                <label for="amountOfPositions">Amount of positions:</label>
+                <h1>${getText("settings", "title")}</h1>
+                <label for="amountOfPositions">${getText("settings", "amountOfPositions")}:</label>
                 <input type="number" id="amountOfPositions" name="amountOfPositions" min="1" max="${mastermind.colors.getAmountOfColors()}" value="${mastermind.amountOfPositions}">
-                <label for="amountOfColors">Amount of colors:</label>
+                <label for="amountOfColors">${getText("settings", "amountOfColors")}:</label>
                 <input type="number" id="amountOfColors" name="amountOfColors" min="${mastermind.amountOfPositions}" max="" value="${mastermind.colors.getAmountOfColors()}">
-                <label for="Theme">Theme:</label>
+                <label for="Theme">${getText("settings", "theme")}:</label>
                 <select id="theme" name="theme" class="select">
-                    <option value="light">Light</option>
-                    <option value="dark">Dark</option>
-                    <option value="devicedefault" selected>Device default</option>
+                    <option value="light">${getText("themes", "light")}</option>
+                    <option value="dark">${getText("themes", "dark")}</option>
+                    <option value="devicedefault" selected>${getText("themes", "default")}</option>
                 </select>
-                <label for="brightnessThreshold" title="The brightness threshold is used to determine the color of the text on the color selector. Higher values will result in more black text, lower values will result in more white text.">Brightness threshold:</label>
+                <label for="language">${getText("settings", "language")}:</label>
+                <select id="language" name="language" class="select">
+                    ${Object.keys(languagesJson).filter((lang) => lang !== "languages").sort().map((lang) => `<option value="${lang}" ${lang === language ? "selected" : ""}>${languagesJson["languages"][lang]}</option>`).join("")}
+                </select>
+                <label for="brightnessThreshold" title="${getText("settings", "brightnessThresholdTitle")}">${getText("settings", "brightnessThreshold")}:</label>
                 <input type="number" id="brightnessThreshold" name="brightnessThreshold" min="0" max="255" value="${mastermind.brightnessThreshold}">
-                <button id="back" class="modalButton backButton">Back</button>
+                <button id="back" class="modalButton backButton">${getText("buttons", "back")}</button>
                 </div>`
         );
         this._open(); // just to be sure
@@ -339,8 +347,12 @@ class ModalBase {
         });
 
         document.getElementById("amountOfPositions").addEventListener("change", (event) => {
-            if (event.target.value < 1 || event.target.value > mastermind.colors.getAmountOfColors()) {
-                showErrorMessage("Invalid amount of positions", this.showSettings.bind(this));
+            if (event.target.value < 1) {
+                showErrorMessage("negativeValue", this.showSettings.bind(this));
+                return;
+            }
+            if (event.target.value > mastermind.colors.getAmountOfColors()) {
+                showErrorMessage("invalidAmountOfPositions"), this.showSettings.bind(this);
                 return;
             }
             if (mastermind.amountOfPositions !== event.target.value) {
@@ -353,7 +365,7 @@ class ModalBase {
         document.getElementById("amountOfColors").addEventListener("change", (event) => {
             // this line is making weird things
             if (parseInt(event.target.value) < parseInt(mastermind.amountOfPositions)) {
-                showErrorMessage("Invalid amount of colors", this.showSettings.bind(this));
+                showErrorMessage("invalidAmountOfColors", this.showSettings.bind(this));
                 return;
             }
             if (!localStorage.getItem("amountOfColors")) {
@@ -373,7 +385,7 @@ class ModalBase {
         });
         document.getElementById("brightnessThreshold").addEventListener("change", (event) => {
             if (event.target.value < 0 || event.target.value > 255) {
-                showErrorMessage("Invalid brightness threshold");
+                showErrorMessage("invalidBrightnessThreshold");
                 return;
             }
             if (mastermind.brightnessThreshold !== event.target.value) {
@@ -391,19 +403,25 @@ class ModalBase {
                 document.body.classList.add(event.target.value);
             }
         });
+        document.getElementById("language").addEventListener("change", (event) => {
+            localStorage.setItem("language", event.target.value);
+            language = event.target.value;
+            
+            // reload parts with text
+            mastermind.colors.generatColors(mastermind.colors.getAmountOfColors());
+
+            mastermind.reset();
+            this.showSettings();
+        });
     }
 
     showHelp() {
-        this._showHelpWrapper("Help", "Back", this.showMainMenu.bind(this));
+        this._showHelpWrapper(getText("buttons", "help"), getText("buttons", "back"), this.showMainMenu.bind(this));
     }
 
     showHello() {
-        this._showHelpWrapper("Hello to Mastermind", "Thanks", this._closeHello.bind(this));
-    }
-
-    _closeHello() {
-        this._close();
         localStorage.setItem("theme", "devicedefault");
+        this._showHelpWrapper(getText("hello"), getText("buttons", "intro"), this._close.bind(this));
     }
 
     _showHelpWrapper(header, outText, action) {
@@ -411,11 +429,11 @@ class ModalBase {
             `<div class="center">
                 <h1>${header}</h1>
                 <br>
-                <p>Mastermind is a code-breaking game. The goal is to guess the secret code in the least amount of guesses.</p>
-                <p>The secret code consists of a sequence of unique colors. The amount of colors and positions can be set in the settings.</p>
-                <p>After each guess, you will receive feedback about the amount of correct colors and the amount of correct colors in the correct position.</p>
-                <p>Originally, the feedback is given in the form of black and white pins. Black pins indicate the amount of correct colors in the correct position, white pins indicate the amount of correct colors in the wrong position.</p>
-                <p>Good luck!</p>
+                <p>${getText("help", "intro")}</p>
+                <p>${getText("help", "code")}</p>
+                <p>${getText("help", "feedback")}</p>
+                <p>${getText("help", "pins")}</p>
+                <p>${getText("help", "luck")}</p>
                 <button id="back" class="modalButton backButton">${outText}</button>
                 </div>`
         );
@@ -429,14 +447,14 @@ class ModalBase {
     warnAboutColorChange(amoutToChangeTo) {
         this._setContent(
             `<div class="center">
-                <h1>Warning</h1>
+                <h1>${getText("warning", "title")}</h1>
                 <br>
-                <p>Only for 8 colors it is guaranteed that the colors are unique and distinguishable.</p>
-                <p>A considerable amount of effort has been put into the auto generation of colors, but as so often, it is not perfect.</p>
+                <p>${getText("warning", "uniqueColors")}</p>
+                <p>${getText("warning", "colorGenerationEffort")}</p>
                 <br>
-                <p>PS: Changing the amount of colors (or positions for that matter) will reset the game.</p>
-                <button id="back1" class="modalButton backButton">I understand, let me change it</button>
-                <button id="back2" class="modalButton backButton">Changed my mind</button>
+                <p>${getText("warning", "ps")}</p>
+                <button id="back1" class="modalButton backButton">${getText("warning", "confirmChange")}</button>
+                <button id="back2" class="modalButton backButton">${getText("warning", "changeMind")}</button>
                 </div>`
         );
         this._open();
@@ -453,25 +471,25 @@ class ModalBase {
         });
     }
 
-    warnAboutColors(amoutToChangeTo) {
+    warnAboutColors(amountToChangeTo) {
         this._setContent(
             `<div class="center">
-                <h1>Warning</h1>
-                <br>
-                <p>Whoa there, champ! I see you've decided to take things to the <strong>next level</strong>.</p>
-                <p>Entering 100 or more? Bold move! 😎</p>
-                <p>Just remember, with great power comes... well, a lot of extra difficulty. But hey, if you're up for the challenge, I’m here cheering you on (from a safe distance).</p>
-                <p>Good luck!</p>
-                <p>PS:  No more warnings from me. You’re on your own now, brave soul!
-                <button id="back1" class="modalButton backButton">No turning back now!</button>
-                <button id="back2" class="modalButton backButton">Changed my mind</button>
-                </div>`
+            <h1>${getText("warningNextLevel", "title")}</h1>
+            <br>
+            <p>${getText("warningNextLevel", "intro")}</p>
+            <p>${getText("warningNextLevel", "boldMove").replace("${amountToChangeTo}", amountToChangeTo)}</p>
+            <p>${getText("warningNextLevel", "greatPower")}</p>
+            <p>${getText("warningNextLevel", "goodLuck")}</p>
+            <p>${getText("warningNextLevel", "ps")}</p>
+            <button id="back1" class="modalButton backButton">${getText("warningNextLevel", "confirmChange")}</button>
+            <button id="back2" class="modalButton backButton">${getText("warningNextLevel", "changeMind")}</button>
+        </div>`
         );
         this._open();
 
         document.getElementById("back1").addEventListener("click", () => {
-            mastermind.colors.generatColors(amoutToChangeTo);
-            localStorage.setItem("amountOfColors", amoutToChangeTo);
+            mastermind.colors.generatColors(amountToChangeTo);
+            localStorage.setItem("amountOfColors", amountToChangeTo);
             mastermind.reset();
             this.showSettings();
         });
@@ -482,12 +500,13 @@ class ModalBase {
 
     showWin() {
         this._setContent(
-            `<div class="center">
-                <h1>Congratulations!</h1>
-                <br>
-                <p>You have guessed the secret code!</p>
-                <button id="back" class="modalButton backButton">Hooray!</button>
-                </div>`
+        `<div class="center">
+            <h1>${getText("success", "title")}</h1>
+            <br>
+            <p>${getText("success", "message")}</p>
+            <button id="back" class="modalButton backButton">${getText("success", "buttonText")}</button>
+        </div>`
+
         );
         this._open();
 
@@ -499,10 +518,10 @@ class ModalBase {
     showErrorMessage(message, goBackModal) {
         this._setContent(
             `<div class="center">
-                <h1>Error</h1>
+                <h1>${getText("errors", "title")}</h1>
                 <br>
                 <p>${message}</p>
-                <button id="back" class="modalButton backButton">Ok</button>
+                <button id="back" class="modalButton backButton">${getText("errors", "back")}</button>
                 </div>`
         );
         this._open();
@@ -523,12 +542,41 @@ class ModalBase {
             }
         });
     }
+
+    askForReset(what, amount) {
+        this._setContent(
+            `<div class="center">
+                <h1>${getText("reset", "title")}</h1>
+                <br>
+                <p>${getText("reset", "message").replace("${amount}", amount).replace("${what}", what)}</p>
+                <p>${getText("reset", "message2").replace("${amount}", amount).replace("${what}", what)}</p>
+                <button id="back" class="modalButton backButton">${getText("reset", "cancel")}</button>
+                <button id="back2" class="modalButton backButton">${getText("reset", "confirm")}</button>
+                </div>`
+        );
+        this._open();
+
+        document.getElementById("back").addEventListener("click", () => {
+            mastermind = new Mastermind();
+            this._close();
+        });
+
+        document.getElementById("back2").addEventListener("click", () => {
+            localStorage.setItem("amountOfColors", 8);
+            localStorage.setItem("amountOfPositions", 4);
+
+            // just reload the page
+            location.reload();
+        });
+
+        
+    }
 }
 
 class Colors {
     constructor(amountOfColors = 8) {
         if (amountOfColors < 1) {
-            showErrorMessage("Invalid amount of colors");
+            showErrorMessage("negativeValue");
             return;
         }
         this.amountOfColors = amountOfColors;
@@ -556,7 +604,7 @@ class Colors {
     }
 
     baseColors() {
-        this.playColors = {
+        const baseColors = {
             red: "#FF0000",
             green: "#00FF00",
             blue: "#0000FF",
@@ -566,6 +614,12 @@ class Colors {
             orange: "#FFA500",
             purple: "#800080"
         };
+
+        this.playColors = {};
+        for (let color in baseColors) {
+            const translatedColor = getText("colors", color);
+            this.playColors[translatedColor] = baseColors[color];
+        }
     }
 
     generatColors(numColors) {
@@ -583,34 +637,6 @@ class Colors {
             this.playColors[sortedNamesArray[index]] = this._hslToHex(color);
         });
         this.amountOfColors = numColors;
-    }
-
-    _getColorName(hue, saturation, lightness) {
-        let colorName = '';
-    
-        // Base hue-based color name
-        if (hue < 15 || hue >= 345) colorName = "Red";
-        else if (hue < 45) colorName = "Orange";
-        else if (hue < 75) colorName = "Yellow";
-        else if (hue < 105) colorName = "Lime";
-        else if (hue < 135) colorName = "Green";
-        else if (hue < 165) colorName = "Teal";
-        else if (hue < 195) colorName = "Cyan";
-        else if (hue < 225) colorName = "Azure";
-        else if (hue < 255) colorName = "Blue";
-        else if (hue < 285) colorName = "Purple";
-        else if (hue < 315) colorName = "Magenta";
-        else if (hue < 345) colorName = "Pink";
-    
-        // Lightness-based modifiers
-        if (lightness < 25) colorName = "Dark " + colorName;
-        else if (lightness > 75) colorName = "Light " + colorName;
-    
-        // Saturation-based modifiers
-        if (saturation < 25) colorName = "Pale " + colorName;
-        else if (saturation > 75) colorName = "Vivid " + colorName;
-    
-        return colorName;
     }
     
     _generateColorsAndNames(numColors) {
@@ -649,6 +675,10 @@ class Colors {
     }
     
     createValuePool(min, max, numValues) {
+        // edge case: 1
+        if (numValues == 1) {
+            return [min];
+        }
         const pool = [];
         const step = (max - min) / (numValues - 1);
     
@@ -672,26 +702,29 @@ class Colors {
         let colorName = '';
     
         // Base hue-based color name
-        if (hue < 15 || hue >= 345) colorName = "Red";
-        else if (hue < 45) colorName = "Orange";
-        else if (hue < 75) colorName = "Yellow";
-        else if (hue < 105) colorName = "Lime";
-        else if (hue < 135) colorName = "Green";
-        else if (hue < 165) colorName = "Teal";
-        else if (hue < 195) colorName = "Cyan";
-        else if (hue < 225) colorName = "Azure";
-        else if (hue < 255) colorName = "Blue";
-        else if (hue < 285) colorName = "Purple";
-        else if (hue < 315) colorName = "Magenta";
-        else if (hue < 345) colorName = "Pink";
+        if (hue < 15 || hue >= 345) colorName = "red";
+        else if (hue < 45) colorName = "orange";
+        else if (hue < 75) colorName = "yellow";
+        else if (hue < 105) colorName = "lime";
+        else if (hue < 135) colorName = "green";
+        else if (hue < 165) colorName = "teal";
+        else if (hue < 195) colorName = "cyan";
+        else if (hue < 225) colorName = "azure";
+        else if (hue < 255) colorName = "blue";
+        else if (hue < 285) colorName = "purple";
+        else if (hue < 315) colorName = "magenta";
+        else if (hue < 345) colorName = "pink";
+
+        colorName = getText("colors", colorName);
+
     
         // Lightness-based modifiers
-        if (lightness < 40) colorName = "Dark " + colorName;
-        else if (lightness > 60) colorName = "Light " + colorName;
+        if (lightness < 40) colorName = getText("colors", "dark") + " " + colorName;
+        else if (lightness > 60) colorName = getText("colors", "light") + " " + colorName;
     
         // Saturation-based modifiers
-        if (saturation < 60) colorName = "Pale " + colorName;
-        else if (saturation > 85) colorName = "Vivid " + colorName;
+        if (saturation < 60) colorName = getText("colors", "pale") + " " + colorName;
+        else if (saturation > 85) colorName = getText("colors", "vivid") + " " + colorName;
     
         return colorName;
     }
@@ -794,35 +827,14 @@ class Colors {
     };
 }
 
-
-let mastermind;
-let modal;
-
-window.onload = function() {
-    const amountOfPositions = localStorage.getItem("amountOfPositions") || 4;
-    const brightnessThreshold = localStorage.getItem("brightnessThreshold") || 111;
-    const amountOfColors = localStorage.getItem("amountOfColors") || 8;
-    mastermind = new Mastermind(amountOfPositions, amountOfColors, brightnessThreshold);
-
-    modal = new ModalBase();
-    document.getElementById("helpButtonArea").addEventListener("click", () => {
-        modal.showMainMenu();
-    });
-
-    // check if user was already on the page
-    if (!localStorage.getItem("theme")) {
-        // intro
-        modal.showHello();
-    }
-}
-
 function showErrorMessage(message, goBackModal = false) {
+    let translatedMessage = getText("errors", message);
     if (!modal) {
         // fallback if modal is not loaded
-        alert(message);
+        alert(translatedMessage);
         return;
     }
-    modal.showErrorMessage(message, goBackModal);
+    modal.showErrorMessage(translatedMessage, goBackModal);
 }
 
 function removeAllIdsAndEventListeners(parent, idExceptions = []) {
@@ -840,3 +852,84 @@ function removeAllIdsAndEventListeners(parent, idExceptions = []) {
     }
     removeIdsAndListeners(parent);
 }
+
+function getText(...identifires) {
+    if (!languagesJson || !languagesJson[language]) {
+        return identifires;
+    }
+    let text = languagesJson[language];
+    for (const identifire of identifires) {
+        if (!text[identifire]) {
+            return identifires;
+        }
+        text = text[identifire];
+    }
+    return text;
+}
+
+async function loadLanguages() {
+    try {
+        const response = await fetch('js/languages.json');
+        if (!response.ok) {
+            showErrorMessage("faliedToLoadLanguages");
+            return null;
+        }
+        const languages = await response.json();
+        return languages;
+    } catch (error) {
+        showErrorMessage("faliedToLoadLanguages");
+        console.error(error);
+        return null;
+    }
+}
+
+
+let mastermind;
+let modal;
+let language = "en";
+let languagesJson;
+
+window.onload = async function() {
+    // init languages
+    languagesJson = await loadLanguages();
+    const allLanguages = languagesJson ? Object.keys(languagesJson) : ["en"];
+
+    language = localStorage.getItem("language") || navigator.language.split("-")[0];
+    if (!allLanguages.includes(language)) {
+        language = "en";
+        // making sure the language is saved, or it will cause problesms in the settings
+        localStorage.setItem("language", language);
+    }
+
+    // init modal
+    modal = new ModalBase();
+    document.getElementById("helpButtonArea").addEventListener("click", () => {
+        modal.showMainMenu();
+    });
+
+
+    const amountOfPositions = localStorage.getItem("amountOfPositions") || 4;
+    const brightnessThreshold = localStorage.getItem("brightnessThreshold") || 111;
+    const amountOfColors = localStorage.getItem("amountOfColors") || 8;
+
+    // in case of to large values ask the user if he want to reset
+    if (amountOfColors >= 10000) {
+        modal.askForReset(getText("reset", "colors"), amountOfColors);
+        return;
+    }
+    if (amountOfPositions >= 1000) {
+        modal.askForReset(getText("reset", "positions"), amountOfPositions);
+        return;
+    }
+
+    // init mastermind
+    mastermind = new Mastermind(amountOfPositions, amountOfColors, brightnessThreshold);
+
+    
+    // check if user was already on the page
+    if (!localStorage.getItem("theme")) {
+        // intro
+        modal.showHello();
+    }
+
+};

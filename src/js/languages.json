@@ -1,0 +1,213 @@
+{   
+    "languages": {
+        "en": "English",
+        "de": "Deutsch"
+    },
+    "en": {
+        "colors": {
+            "red": "Red",
+            "orange": "Orange",
+            "yellow": "Yellow",
+            "lime": "Lime",
+            "green": "Green",
+            "teal": "Teal",
+            "cyan": "Cyan",
+            "azure": "Azure",
+            "blue": "Blue",
+            "purple": "Purple",
+            "magenta": "Magenta",
+            "pink": "Pink",
+
+            "dark": "Dark",
+            "light": "Light",
+
+            "pale": "Pale",
+            "vivid": "Vivid",
+
+            "select": "Select a color"
+        },
+        "errors": {
+            "title": "Error",
+            "back": "Ok",
+            "invalidAmountOfColors": "Not enough colors for the amount of positions",
+            "colorNotInArray": "Invalid color",
+            "invalidPosition": "Invalid position",
+            "colorAlreadyUsed": "Color already used",
+            "notAllPositionsFilled": "Not all positions are filled",
+            "invalidBrightnessThreshold": "Invalid brightness threshold",
+            "invalidAmountOfPositions": "Not enough positions for the amount of colors",
+            "negativeValue": "Common, seriously? Negative values are not allowed!",
+            "faliedToLoadLanguages": "Failed to load languages"
+        },
+        "buttons": {
+            "submit": "Guess",
+            "reset": "Reset",
+            "settings": "Settings",
+            "help": "Help",
+            "back": "Back",
+            "intro": "Thanks!"
+        },
+        "feedback": {
+            "correctPosition": "position",
+            "correctColor": "colors"
+        },
+        "settings": {
+            "title": "Settings",
+            "amountOfPositions": "Amount of positions",
+            "amountOfColors": "Amount of colors",
+            "theme": "Theme",
+            "language": "Language",
+            "brightnessThresholdTitle": "The brightness threshold is used to determine the color of the text on the color selector. Higher values will result in more black text, lower values will result in more white text.",
+            "brightnessThreshold": "Brightness threshold"
+        },
+        "themes": {
+            "light": "Light",
+            "dark": "Dark",
+            "default": "Device default"
+        },
+        "hello": "Welcome to Mastermind!",
+        "help": {
+            "intro": "Mastermind is a code-breaking game. The goal is to guess the secret code in the least amount of guesses.",
+            "code": "The secret code consists of a sequence of unique colors. The amount of colors and positions can be set in the settings.",
+            "feedback": "After each guess, you will receive feedback about the amount of correct colors and the amount of correct colors in the correct position.",
+            "pins": "Originally, the feedback is given in the form of black and white pins. Black pins indicate the amount of correct colors in the correct position, white pins indicate the amount of correct colors in the wrong position.",
+            "luck": "Good luck!"
+        },
+        "warning": {
+            "title": "Warning",
+            "uniqueColors": "Only for 8 colors it is guaranteed that the colors are unique and distinguishable.",
+            "colorGenerationEffort": "A considerable amount of effort has been put into the auto generation of colors, but as so often, it is not perfect.",
+            "ps": "PS: Changing the amount of colors (or positions for that matter) will reset the game.",
+            "confirmChange": "I understand, let me change it",
+            "changeMind": "Changed my mind"
+        }, 
+        "warningNextLevel": {
+            "title": "Warning",
+            "intro": "Whoa there, champ! I see you've decided to take things to the <strong>next level</strong>.",
+            "boldMove": "Entering the realm of ${amountToChangeTo} colors, are we? Bold move! 😎",
+            "greatPower": "Just remember, with great power comes... well, a lot of extra difficulty. But hey, if you're up for the challenge, I’m here cheering you on (from a safe distance).",
+            "goodLuck": "Good luck!",
+            "ps": "PS: No more warnings from me. You’re on your own now, brave soul!",
+            "confirmChange": "No turning back now!",
+            "changeMind": "Changed my mind"
+        },
+        "success": {
+            "title": "Congratulations!",
+            "message": "You have guessed the secret code!",
+            "buttonText": "Hooray!"
+        },
+        "reset": {
+            "colors": "colors",
+            "positions": "positions",
+            "title": "Hey just one Quick thing!",
+            "message": "I noticed that you entered ${amount} ${what} last time.",
+            "message2": "Generating that much ${what} takes, depending on your device, a wee bit of time. So, are you sure you want to do that again?",
+            "cancel": "Yes, I'm sure",
+            "confirm": "No, please reset"
+        }
+    },
+    "de": {
+        "colors": {
+            "red": "Rot",
+            "orange": "Orange",
+            "yellow": "Gelb",
+            "lime": "Limette",
+            "green": "Grün",
+            "teal": "Türkis",
+            "cyan": "Cyan",
+            "azure": "Azurblau",
+            "blue": "Blau",
+            "purple": "Lila",
+            "magenta": "Magenta",
+            "pink": "Rosa",
+
+            "dark": "Dunkel",
+            "light": "Hell",
+
+            "pale": "Blass",
+            "vivid": "Lebendig",
+
+            "select": "Wähle eine Farbe"
+        },
+        "errors": {
+            "title": "Fehler",
+            "back": "Ok",
+            "invalidAmountOfColors": "Nicht genügend Farben für die Anzahl der Positionen",
+            "colorNotInArray": "Ungültige Farbe",
+            "invalidPosition": "Ungültige Position",
+            "colorAlreadyUsed": "Farbe bereits verwendet",
+            "notAllPositionsFilled": "Nicht alle Positionen sind gefüllt",
+            "invalidBrightnessThreshold": "Ungültiger Helligkeitsschwellenwert",
+            "invalidAmountOfPositions": "Nicht genügend Positionen für die Anzahl der Farben",
+            "negativeValue": "Komm schon, im Ernst? Negative Werte sind nicht erlaubt!",
+            "faliedToLoadLanguages": "Sprachen konnten nicht geladen werden"
+        },
+        "buttons": {
+            "submit": "Raten",
+            "reset": "Zurücksetzen",
+            "settings": "Einstellungen",
+            "help": "Hilfe",
+            "back": "Zurück",
+            "intro": "Danke!"
+        },
+        "feedback": {
+            "correctPosition": "Position",
+            "correctColor": "Farben"
+        },
+        "settings": {
+            "title": "Einstellungen",
+            "amountOfPositions": "Anzahl der Positionen",
+            "amountOfColors": "Anzahl der Farben",
+            "theme": "Farbschema",
+            "language": "Sprache",
+            "brightnessThresholdTitle": "Der Helligkeitsschwellenwert wird verwendet, um die Textfarbe im Farbwähler zu bestimmen. Höhere Werte führen zu mehr schwarzem Text, niedrigere Werte zu mehr weißem Text.",
+            "brightnessThreshold": "Helligkeitsschwellenwert"
+        },
+        "themes": {
+            "light": "Hell",
+            "dark": "Dunkel",
+            "default": "Gerätestandard"
+        },
+        "hello": "Willkommen bei Mastermind!",
+        "help": {
+            "intro": "Mastermind ist ein Code-Knackspiel. Das Ziel ist es, den geheimen Code mit so wenig Versuchen wie möglich zu erraten.",
+            "code": "Der geheime Code besteht aus einer Reihenfolge von einzigartigen Farben. Die Anzahl der Farben und Positionen kann in den Einstellungen festgelegt werden.",
+            "feedback": "Nach jedem Versuch erhältst du Rückmeldung über die Anzahl der richtigen Farben und die Anzahl der richtigen Farben an der richtigen Position.",
+            "pins": "Ursprünglich wird das Feedback in Form von schwarzen und weißen Pins gegeben. Schwarze Pins zeigen die Anzahl der richtigen Farben an der richtigen Position an, weiße Pins zeigen die Anzahl der richtigen Farben an der falschen Position an.",
+            "luck": "Viel Glück!"
+        },
+        "warning": {
+            "title": "Warnung",
+            "uniqueColors": "Nur bei 8 Farben ist garantiert, dass die Farben einzigartig und unterscheidbar sind.",
+            "colorGenerationEffort": "Es wurde erheblicher Aufwand in die automatische Farberzeugung gesteckt, aber wie so oft, ist sie nicht perfekt.",
+            "ps": "PS: Das Ändern der Anzahl der Farben (oder Positionen) setzt das Spiel zurück.",
+            "confirmChange": "Ich verstehe, lass es mich ändern",
+            "changeMind": "Ich habe es mir anders überlegt"
+        },
+        "warningNextLevel": {
+            "title": "Warnung",
+            "intro": "Whoa, Champion! Ich sehe, du hast beschlossen, das <strong>nächste Level</strong> zu erreichen.",
+            "boldMove": "Du betrittst das Reich von ${amountToChangeTo} Farben, richtig? Mutiger Schritt! 😎",
+            "greatPower": "Denk einfach daran, mit großer Macht kommt... nun, eine Menge zusätzlicher Schwierigkeiten. Aber hey, wenn du die Herausforderung annimmst, stehe ich hier und feuere dich an (aus sicherer Entfernung).",
+            "goodLuck": "Viel Glück!",
+            "ps": "PS: Keine weiteren Warnungen von mir. Du bist jetzt auf dich allein gestellt, mutige Seele!",
+            "confirmChange": "Kein Zurück mehr!",
+            "changeMind": "Ich habe es mir anders überlegt"
+        },
+        "success": {
+            "title": "Herzlichen Glückwunsch!",
+            "message": "Du hast den geheimen Code erraten!",
+            "buttonText": "Hurra!"
+        },
+        "reset": {
+            "colors": "Farben",
+            "positions": "Positionen",
+            "title": "Hey, nur eine kleine Sache!",
+            "message": "Ich habe bemerkt, dass du letztes Mal ${amount} ${what} eingegeben hast.",
+            "message2": "Das Generieren so vieler ${what} dauert, abhängig von deinem Gerät, eine kleine Weile. Bist du sicher, dass du das nochmal machen möchtest?",
+            "cancel": "Ja, ich bin sicher",
+            "confirm": "Nein, bitte zurücksetzen"
+        }
+    }
+
+}
