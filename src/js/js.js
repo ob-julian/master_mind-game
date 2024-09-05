@@ -154,22 +154,22 @@ class Mastermind {
         }
         
         let correctPositions = 0;
-        let correctColors = [];
-        let correctColor = 0;
+        let correctColors = 0;
         // Check for correct positions
         for (let i = 0; i < this.amountOfPositions; i++) {
             if (this.playField[i] === this.secret[i]) {
                 correctPositions++;
-                correctColors.push(this.playField[i]);
             }
         }
 
         // win check
-        if (correctPositions === this.amountOfPositions) {
+        // amountOfPositions can be string...
+        if (correctPositions == this.amountOfPositions) {
             modal.showWin();
             // change button to reset
             const button = document.getElementById("submit");
-            // remove event listener
+
+            // replace event listener
             const clone = button.cloneNode(true);
             button.parentNode.replaceChild(clone, button);
             clone.innerHTML = getText("buttons", "reset");
@@ -182,14 +182,13 @@ class Mastermind {
         // Check for correct colors
         for (let i = 0; i < this.amountOfPositions; i++) {
             for (let j = 0; j < this.amountOfPositions; j++) {
-                if (this.playField[i] === this.secret[j] && !correctColors.includes(this.playField[i])) {
-                    correctColor++;
-                    correctColors.push(this.playField[i]);
+                if (this.playField[i] === this.secret[j]) {
+                    correctColors++;
                 }
             }
         }
 
-        this.updatePlayField(correctPositions, correctColor);
+        this.updatePlayField(correctPositions, correctColors);
     }
 
     updatePlayField(correctPositions, correctColors) {
@@ -205,9 +204,9 @@ class Mastermind {
 
         const button__td = document.getElementById("button_td");
         button__td.innerHTML = `
-            ${getText("feedback", "position")}: ${correctPositions}
+            ${getText("feedback", "correctPosition")}: ${correctPositions}
             <br>
-            ${getText("feedback", "colors")}: ${correctColors}}
+            ${getText("feedback", "correctColor")}: ${correctColors}
         `;
 
         removeAllIdsAndEventListeners(tr);
@@ -315,6 +314,12 @@ class ModalBase {
     }
 
     showSettings() {
+        if (localStorage.getItem("hasOpenedSettings") === null) {
+            localStorage.setItem("hasOpenedSettings", true);
+            this.warnAboutSettingsChanges();
+            return;
+        }
+
         this._setContent(
             `<div class="center">
                 <h1>${getText("settings", "title")}</h1>
@@ -444,6 +449,23 @@ class ModalBase {
         });
     }
 
+    warnAboutSettingsChanges() {
+        this._setContent(
+            `<div class="center">
+                <h1>${getText("warningMenu", "title")}</h1>
+                <br>
+                <p>${getText("warningMenu", "message")}</p>
+                <button id="back" class="modalButton backButton">${getText("warningMenu", "confirm")}</button>
+                </div>`
+        );
+        this._open();
+
+        document.getElementById("back").addEventListener("click", () => {
+            this.showSettings();
+        }
+        );
+    }
+
     warnAboutColorChange(amoutToChangeTo) {
         this._setContent(
             `<div class="center">
@@ -451,8 +473,6 @@ class ModalBase {
                 <br>
                 <p>${getText("warning", "uniqueColors")}</p>
                 <p>${getText("warning", "colorGenerationEffort")}</p>
-                <br>
-                <p>${getText("warning", "ps")}</p>
                 <button id="back1" class="modalButton backButton">${getText("warning", "confirmChange")}</button>
                 <button id="back2" class="modalButton backButton">${getText("warning", "changeMind")}</button>
                 </div>`
@@ -900,6 +920,8 @@ window.onload = async function() {
         // making sure the language is saved, or it will cause problesms in the settings
         localStorage.setItem("language", language);
     }
+    // change the language of the page
+    document.documentElement.lang = language;
 
     // init modal
     modal = new ModalBase();

@@ -77,10 +77,14 @@
             "title": "Warning",
             "uniqueColors": "Only for 8 colors it is guaranteed that the colors are unique and distinguishable.",
             "colorGenerationEffort": "A considerable amount of effort has been put into the auto generation of colors, but as so often, it is not perfect.",
-            "ps": "PS: Changing the amount of colors (or positions for that matter) will reset the game.",
             "confirmChange": "I understand, let me change it",
             "changeMind": "Changed my mind"
-        }, 
+        },
+        "warningMenu": {
+            "title": "Please note",
+            "message": "Changing stuff in the settings will reset the game. Just so you know.",
+            "confirm": "Got it"
+        },
         "warningNextLevel": {
             "title": "Warning",
             "intro": "Whoa there, champ! I see you've decided to take things to the <strong>next level</strong>.",
@@ -180,9 +184,13 @@
             "title": "Warnung",
             "uniqueColors": "Nur bei 8 Farben ist garantiert, dass die Farben einzigartig und unterscheidbar sind.",
             "colorGenerationEffort": "Es wurde erheblicher Aufwand in die automatische Farberzeugung gesteckt, aber wie so oft, ist sie nicht perfekt.",
-            "ps": "PS: Das Ändern der Anzahl der Farben (oder Positionen) setzt das Spiel zurück.",
             "confirmChange": "Ich verstehe, lass es mich ändern",
             "changeMind": "Ich habe es mir anders überlegt"
+        },
+        "warningMenu": {
+            "title": "Bitte beachten",
+            "message": "Das Ändern von Einstellungen wird das Spiel zurücksetzen. Nur damit du es weißt.",
+            "confirm": "Verstanden"
         },
         "warningNextLevel": {
             "title": "Warnung",
